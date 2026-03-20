@@ -23,6 +23,19 @@ Goal: Avoid joining with an admin account or storing an admin password on the se
 ### UC5. Sign in to the Server Using a Domain Account
 Goal: Allow a user to log in with an AD account after first boot.
 Goal: Ensure the server has been joined using the temporary computer account password.
+Goal: One can sign-in into Active Directory on the machine, SSSD is managing the connection etc, sudo policies etc.
+      Kerberos, kinit tickets work etc.
+
+### UC6. Linux servers computer accounts shall be placed in a specific OU in AD
+
+### UC7. Newly create computer account for servers shall have a prefix for them
+
+### UC8. Use the FQDN as the computer name.
+
+### UC9. Use a digest of the computer name as the computer name (SHA256)
+
+### UC10. The plugin can provision Active Directory in a multi DC environment, that might be down
+
 
 ## Prerequisite
 
