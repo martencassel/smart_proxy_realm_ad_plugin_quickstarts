@@ -1,38 +1,40 @@
-# Scenario
+# Smart Proxy Realm AD Plugin Quickstart
 
-# UC1. User Creates Host
-# Goal: Build a Linux Server that can be joined automatically and securely to Active Directory after install.
+This guide describes how to install and configure Foreman Smart Proxy with the Active Directory realm plugin on RHEL 9.7.
 
-# UC2. User Updates Host
-# Goal: Reinstall a Linux Server and can be rejoined automatically and securely to Active Directory after reinstall.
-# Goal: Keep the comuputer name.
+## Use Cases
 
-# UC3. User Deletes Host
-# Goal: Remove a Linux Server and automatically remove its account from Active Directory.
+### UC1. User Creates Host
+Goal: Build a Linux server that can be joined automatically and securely to Active Directory after install.
 
-# UC4. Provisining Template
-# Goal: In the template is provided from Foreman the one-time password to join the computer to active directory.
-# Goal: The computer account was already created by the foreman realm plugin with this password set.
-# Goal: We can join the linux server using a unprivileged join account.
-# Goal: We dont need to join the linux server with an admin account and host the password on the server.
+### UC2. User Updates Host
+Goal: Reinstall a Linux server and rejoin it automatically and securely to Active Directory.
+Goal: Keep the computer name.
 
-# UC5: Sign-in to the server using a Domain Account
-# Goal: A user can login to the server using a AD account after first boot.
-# Goal: The server has been joined with the temporary computer account password.
+### UC3. User Deletes Host
+Goal: Remove a Linux server and automatically remove its account from Active Directory.
 
-***
+### UC4. Provisioning Template
+Goal: Provide a one-time password from Foreman in the provisioning template to join the computer to Active Directory.
+Goal: Use a computer account already created by the Foreman realm plugin with this password.
+Goal: Join the Linux server using an unprivileged join account.
+Goal: Avoid joining with an admin account or storing an admin password on the server.
 
-## OS Assumptions
+### UC5. Sign in to the Server Using a Domain Account
+Goal: Allow a user to log in with an AD account after first boot.
+Goal: Ensure the server has been joined using the temporary computer account password.
+
+## Prerequisite
+
+Verify that the host is RHEL 9.7:
 
 ```bash
 grep -q "release 9.7" /etc/redhat-release && echo "RHEL 9.7" || echo "Not RHEL 9.7"
 ```
 
-***
-
 ## 1. Configure Network (Static IP)
 
-Replace values as needed:
+Replace the IP values as needed:
 
 ```bash
 nmcli con mod "$(nmcli -t -f NAME con show --active | head -n1)" \
@@ -44,25 +46,19 @@ nmcli con mod "$(nmcli -t -f NAME con show --active | head -n1)" \
 nmcli con up "$(nmcli -t -f NAME con show --active | head -n1)"
 ```
 
-***
-
 ## 2. Disable Firewall (Optional)
 
 ```bash
 systemctl disable firewalld --now
 ```
 
-***
-
-## 3. Update System & Install Basic Tools
+## 3. Update System and Install Basic Tools
 
 ```bash
 sudo -i
 subscription-manager register --username marten.cassel@conoa.se --org 6698658
 dnf update && dnf -y install vim
 ```
-
-***
 
 ## 4. Set Hostname
 
@@ -71,9 +67,7 @@ hostnamectl set-hostname foreman.lab
 echo "192.168.0.12 foreman.lab" | tee -a /etc/hosts > /dev/null
 ```
 
-***
-
-## 5. Add Repositories & Upgrade
+## 5. Add Repositories and Upgrade
 
 ```bash
 sudo -i
@@ -85,11 +79,11 @@ dnf repolist enabled
 dnf upgrade
 ```
 
+Install Foreman installer:
+
 ```bash
 dnf install -y foreman-installer
 ```
-
-***
 
 ## 6. Install AD Realm Plugin
 
@@ -97,54 +91,54 @@ dnf install -y foreman-installer
 dnf install -y rubygem-smart_proxy_realm_ad_plugin.noarch
 ```
 
-***
-
-## 7. Run the installer
+## 7. Run the Installer
 
 ```bash
 foreman-installer \
   --foreman-proxy-realm=true \
   --foreman-proxy-realm-provider=ad
 ```
-***
 
-## 7 Check Installer Logs
+## 8. Check Installer Logs
 
 ```bash
 cat /var/log/foreman-proxy/proxy.log
 cat /var/log/foreman-installer/foreman.log
 ```
 
-***
+## 9. Verify Services and Proxy Features
 
-## 8. Check Services
+Check service status:
 
 ```bash
 systemctl status foreman
 systemctl status foreman-proxy
 ```
-***
+
+Check listening ports:
 
 ```bash
 sudo dnf install net-tools
 netstat -tulpen
 ```
 
+Verify Smart Proxy features:
+
 ```bash
 curl -k \
   --cert /etc/puppetlabs/puppet/ssl/certs/$(hostname -f).pem \
   --key /etc/puppetlabs/puppet/ssl/private_keys/$(hostname -f).pem \
   --cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem \
-  https://foreman.lab:8443/v2/features|jq
+  https://foreman.lab:8443/v2/features | jq
 ```
 
-## 9. Example Realm AD Configuration File
+## 10. Example Realm AD Configuration
 
-**File:** `/etc/foreman-proxy/settings.d/realm_ad.yml`
+File: /etc/foreman-proxy/settings.d/realm_ad.yml
 
 ```yaml
 ---
-# Authentication for Kerberos-based Realms
+# Authentication for Kerberos-based realms
 :realm: EXAMPLE.COM
 
 # Kerberos principal used to authenticate against Active Directory
@@ -153,25 +147,23 @@ curl -k \
 # Path to the keytab used to authenticate against Active Directory
 :keytab_path: /etc/foreman-proxy/realm_ad.keytab
 
-# FQDN of the Domain Controller
+# FQDN of the domain controller
 :domain_controller: dc.example.com
 
 # Optional: OU where the machine account shall be placed
 #:ou: OU=Linux,OU=Servers,DC=example,DC=com
 
-# Optional: Prefix for computername
+# Optional: Prefix for computer name
 #:computername_prefix: ''
 
-# Optional: Hash hostname for computername
+# Optional: Hash hostname for computer name
 #:computername_hash: false
 
-# Optional: Use FQDN as computername
+# Optional: Use FQDN as computer name
 #:computername_use_fqdn: false
 ```
-***
 
-
-## 10. Create a keytab
+## 11. Create a Keytab
 
 ```bash
 adcli create-user foreman-proxy --domain=example.com
@@ -182,19 +174,12 @@ Password for foreman-proxy:
 ```
 
 ```bash
-[root@foreman ~]# ktutil
+ktutil
 
-ktutil:  addent -password -p foreman-proxy@EXAMPLE.COM -k 1 -e aes256-cts-hmac-sha1-96
-Password for foreman-proxy@EXAMPLE.COM: **********
-
-ktutil:  addent -password -p foreman-proxy@EXAMPLE.COM -k 1 -e aes128-cts-hmac-sha1-96
-Password for foreman-proxy@EXAMPLE.COM: **********
-
-ktutil:  wkt /tmp/realm.keytab
-ktutil:  quit
-
-[root@foreman ~]# cat /tmp/realm.keytab
-
+addent -password -p foreman-proxy@EXAMPLE.COM -k 1 -e aes256-cts-hmac-sha1-96
+addent -password -p foreman-proxy@EXAMPLE.COM -k 1 -e aes128-cts-hmac-sha1-96
+wkt /tmp/realm.keytab
+quit
 ```
 
 ```bash
