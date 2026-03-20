@@ -206,3 +206,27 @@ quit
 ```bash
 kinit -kt /tmp/realm.keytab foreman-proxy@EXAMPLE.COM
 ```
+
+## 12. Verify that Foreman plugin can connect to Active Directory
+
+### 1. DNS
+### 2. Network connectivity
+### 3. adcli
+### 4. Manual Login using kinit
+
+## 13. Verify permission in Active Directory using Powershell
+
+### 1. Verify the permissions for the foreman service account
+### 2. Check permissions
+
+## 14. Troubleshoot plugin issues
+
+### 1. Configuration issue in loading the plugin
+### 2. How to get loading errors
+
+# 15. Examples of settings
+
+# 16. Dealing with Multiple Domain Controllers
+
+### Pick this PR, and build the gem yourself.
+https://github.com/theforeman/smart_proxy_realm_ad_plugin/pull/53/changes
