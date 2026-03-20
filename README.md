@@ -2,7 +2,7 @@
 
 ![Smart Proxy Realm AD Plugin](image.png)
 
-# Smart Proxy Realm AD Plugin Quickstart
+## Smart Proxy Realm AD Plugin Quickstart
 
 This guide describes how to install and configure Foreman Smart Proxy with the Active Directory realm plugin on RHEL 9.7.
 
@@ -40,7 +40,7 @@ Goal: One can sign-in into Active Directory on the machine, SSSD is managing the
 
 ### UC10. The plugin can provision Active Directory in a multi DC environment, that might be down
 
-# Quickstart Guide
+## Quickstart Guide
 
 This guide helps you setup Foreman to automatically manage AD-joined provisioned servers.
 It lets you join servers automtically to Active Directory during provisioning withouth using any additional credentials in provisioning templates etc. Computer accounts are managed by foreman through the plugin.
@@ -209,24 +209,24 @@ kinit -kt /tmp/realm.keytab foreman-proxy@EXAMPLE.COM
 
 ## 12. Verify that Foreman plugin can connect to Active Directory
 
-### 1. DNS
-### 2. Network connectivity
-### 3. adcli
-### 4. Manual Login using kinit
+### DNS
+### Network connectivity
+### adcli
+### Manual login using kinit
 
 ## 13. Verify permission in Active Directory using Powershell
 
-### 1. Verify the permissions for the foreman service account
-### 2. Check permissions
+### Verify the permissions for the Foreman service account
+### Check permissions
 
 ## 14. Troubleshoot plugin issues
 
-### 1. Configuration issue in loading the plugin
-### 2. How to get loading errors
+### Configuration issue in loading the plugin
+### How to get loading errors
 
-# 15. Examples of settings
+## 15. Examples of settings
 
-# 16. Dealing with Multiple Domain Controllers
+## 16. Dealing with Multiple Domain Controllers
 
 ### Pick this PR, and build the gem yourself.
 https://github.com/theforeman/smart_proxy_realm_ad_plugin/pull/53/changes
