@@ -1,13 +1,8 @@
 -include .env
 export
 
-check-env:
-	@if [ -z "$(RHSM_USERNAME)" ] || [ -z "$(RHSM_PASSWORD)" ]; then \
-	  echo "ERROR: RHSM_USERNAME and RHSM_PASSWORD must be set in .env"; \
-	  exit 1; \
-	fi
 
-ubi97: check-env
+ubi97:
 	DOCKER_BUILDKIT=1 docker build -f Dockerfile.ubi97 -t adtest:ubi97 --no-cache .
 
 shell-ubi97:
