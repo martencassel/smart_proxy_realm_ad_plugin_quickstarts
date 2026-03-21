@@ -1,0 +1,10 @@
+# General-purpose deployments where machines land in the
+# domain’s default Computers container and naming is handled externally.
+---
+:realm: EXAMPLE.COM
+
+:principal: realm-proxy@EXAMPLE.COM
+
+:keytab_path: /etc/foreman-proxy/realm_ad.keytab
+
+:domain_controller: dc01.example.com

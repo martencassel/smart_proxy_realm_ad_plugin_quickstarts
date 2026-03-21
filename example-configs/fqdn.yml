@@ -1,0 +1,10 @@
+# Environments where Linux hosts must be placed in a dedicated OU and
+# the AD object must match the machine’s FQDN exactly.
+---
+:realm: EXAMPLE.COM
+:principal: realm-proxy@EXAMPLE.COM
+:keytab_path: /etc/foreman-proxy/realm_ad.keytab
+:domain_controller: dc01.example.com
+
+:ou: OU=Linux,OU=Servers,DC=example,DC=com
+:computername_use_fqdn: true

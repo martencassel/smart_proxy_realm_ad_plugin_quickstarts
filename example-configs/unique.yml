@@ -1,0 +1,10 @@
+# Large workstation fleets where hostnames may collide or be non‑unique; hashing ensures deterministic uniqueness.
+---
+:realm: EXAMPLE.COM
+:principal: realm-proxy@EXAMPLE.COM
+:keytab_path: /etc/foreman-proxy/realm_ad.keytab
+:domain_controller: dc02.example.com
+
+:ou: OU=Workstations,OU=Stockholm,DC=example,DC=com
+:computername_prefix: "LINUX-"
+:computername_hash: true

@@ -1,0 +1,13 @@
+# Security‑sensitive deployments where keytab exposure must be minimized and hosts must land in a hardened OU.
+
+---
+:realm: SECURE.EXAMPLE.COM
+:principal: realm-proxy@SECURE.EXAMPLE.COM
+
+# Keytab stored in a root-only directory outside standard paths
+:keytab_path: /var/lib/foreman-proxy/secure/realm.keytab
+
+:domain_controller: dc-sec01.secure.example.com
+
+:ou: OU=Hardened,OU=Servers,DC=secure,DC=example,DC=com
+:computername_use_fqdn: true

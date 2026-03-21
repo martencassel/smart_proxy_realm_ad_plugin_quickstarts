@@ -1,0 +1,10 @@
+# syntax=docker/dockerfile:1.4
+FROM almalinux:9.7
+
+RUN dnf update -y; \
+    dnf install -y vim bash; \
+    dnf clean all;
+
+COPY ./adtest.sh /usr/local/bin/adtest
+RUN chmod +x /usr/local/bin/adtest
+ENTRYPOINT ["/usr/local/bin/adtest"]

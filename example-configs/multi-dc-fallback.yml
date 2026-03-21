@@ -1,0 +1,8 @@
+# Distributed AD environments where Foreman Proxy should prefer a specific site‑local DC but still rely on SRV discovery if unreachable.
+---
+:realm: EXAMPLE.COM
+:principal: realm-proxy@EXAMPLE.COM
+:keytab_path: /etc/foreman-proxy/realm_ad.keytab
+
+# Prefer local DC, but allow DNS SRV fallback
+:domain_controller: dc-sthlm-01.example.com

@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1.4
+FROM redhat/ubi9:9.7
+
+RUN dnf update -y && dnf install -y vim bash bind-utils krb5-workstation adcli nmap-ncat; \
+    dnf clean all; \
+    subscription-manager unregister; \
+    subscription-manager clean
+
+# must register to install packages, but we don't want to leave the container registered
+RUN echo "This container requires RHSM credentials to build but will be unregistered at the end of the build. See .env.example for details."
+COPY ./adtest.sh /usr/local/bin/adtest
+RUN chmod +x /usr/local/bin/adtest
+ENTRYPOINT ["/usr/local/bin/adtest"]

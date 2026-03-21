@@ -77,7 +77,7 @@ systemctl disable firewalld --now
 
 ```bash
 sudo -i
-subscription-manager register --username marten.cassel@conoa.se --org 6698658
+subscription-manager register --username username --orgid orgid 
 dnf update && dnf -y install vim
 ```
 
